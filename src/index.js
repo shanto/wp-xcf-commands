@@ -1,155 +1,117 @@
-import { useMemo, useEffect } from "@wordpress/element";
-import { useSelect } from "@wordpress/data";
+import { useMemo } from "@wordpress/element";
+import { AsyncModeProvider, useSelect } from "@wordpress/data";
 import { store as coreDataStore } from "@wordpress/core-data";
 import { useCommandLoader } from "@wordpress/commands";
 import { registerPlugin } from "@wordpress/plugins";
 import { addQueryArgs } from "@wordpress/url";
 import { page as pageIcon } from "@wordpress/icons";
 
-function useContentSearchCommandLoader(_ref) {
-	var search = _ref.search;
-	var preLoading = false;
-
-	var _useSelect = useSelect(
-		function (select) {
-
-			const stillLoading = {
-				results: [],
-				isLoading: true,
-			};
-
-			if (preLoading) {
-				return stillLoading;
-			}
-
-			preLoading = true;
-			
-			var allPostTypes = select( coreDataStore ).getPostTypes( { per_page: 20 } ) || [];
-
-			preLoading = false;
-
-			var postTypes = allPostTypes.filter(function (postType) {
-				if (
-					!postType ||
-					!postType?.supports?.editor ||
-					postType?.slug.match(/^boldblocks_|^acf-|^wp_/) ||
-					!postType?.visibility?.show_ui || ['post', 'page', 'navigation', 'block'].includes(postType.slug)
-				) {
-					return false;
-				}
-
-				return true;
-			});
-
-			if (!search || search?.length < 3) {
-				return stillLoading;
-			}
-
-			var query = {
-				search: search,
-				per_page: 10,
-				orderby: "relevance",
-			};
-
-			var results = postTypes.map(function (postType) {
-				return {
-					postType: postType,
-					records:
-						select(coreDataStore).getEntityRecords("postType", postType.slug, query) || [],
-					isLoading: !select(coreDataStore).hasFinishedResolution(
-						"getEntityRecords",
-						"postType",
-						postType.slug,
-						query,
-					),
-				};
-			});
-
-			var isLoading = results.some(function (item) {
-				return item.isLoading;
-			});
-
-			return {
-				results: results,
-				isLoading: isLoading,
-			};
-		},
+function ContentTypeCommandLoader({ type: postType, search }) {
+	var args = ["postType", postType.slug];
+	var query = useMemo(
+		() => ({
+			search: search,
+			per_page: 10,
+			orderby: "relevance",
+		}),
 		[search],
-	),
-	results = _useSelect.results,
-	isLoading = _useSelect.isLoading;
-
-	var commands = useMemo(
-		function () {
-			var all = [];
-
-			results.forEach(function (item) {
-				var postType = item.postType;
-				var labels = postType.labels || {};
-
-				(item.records || []).forEach(function (record) {
-					all.push({
-						name:
-							"xcf-commands/edit-" +
-							postType.slug +
-							"-" +
-							record.id,
-						icon: pageIcon,
-						label:
-							(record.title && record.title.rendered) ||
-							"(No title)",
-						description:
-							labels.singular_name || postType.slug,
-						callback: function callback(_ref2) {
-							var close = _ref2.close;
-
-							var args = {
-								action: 'edit',
-								post: record.id,
-							};
-
-							document.location = addQueryArgs("post.php", args);
-							close();
-						},
-					});
-				});
-			});
-
-			return all.slice(0, 10);
-		},
-		[results, history],
 	);
 
-	useEffect(
-		function () {
-			if (!search || !commands || !commands.length) {
-				return;
-			}
-
-			const firstItem = document
-				.querySelector("[cmdk-group-items]>*:first-child");
-			firstItem?.scrollIntoView();
-			firstItem?.focus({ preventScroll: true });
+	const { records, isLoading } = useSelect(
+		(select) => {
+			const core = select(coreDataStore);
+			const isResolving = core.isResolving(...args, query);
+			var results = !isResolving
+				? core.getEntityRecords(...args, query)
+				: null;
+			return {
+				records: results,
+				isLoading: isResolving,
+			};
 		},
-		[search, commands && commands.length],
+		[postType.slug, query],
 	);
 
-	return {
-		commands: commands,
-		isLoading: isLoading,
-	};
+	const commands = useMemo(() => {
+		if (!records) {
+			return [];
+		}
+		return records.map((record) => {
+			return {
+				name: `xcf-commands/edit-${postType.slug}-${record.id}`,
+				icon: pageIcon,
+				label: (record.title && record.title.rendered) || "(No title)",
+				description: postType.labels?.singular_name || postType.name,
+				callback: function callback(_ref2) {
+					var close = _ref2.close;
+
+					var args = {
+						action: "edit",
+						post: record.id,
+					};
+
+					document.location = addQueryArgs("post.php", args);
+					close();
+				},
+			};
+		});
+	}, [records, postType.slug, postType.labels?.singular_name, postType.name]);
+
+	return { commands, isLoading };
 }
 
-function ContentSearchCommandLoader() {
+function ContentTypeSearch({ postType }) {
 	useCommandLoader({
-		name: "xcf-commands/content-search",
-		hook: useContentSearchCommandLoader,
+		name: `xcf-commands/${postType.slug}-search`,
+		hook: (search) => {
+			return ContentTypeCommandLoader({ ...search, type: postType });
+		},
+	});
+}
+
+function ContentSearchRoot() {
+	var postTypes;
+
+	postTypes = useSelect(function (select) {
+		var allPostTypes = select(coreDataStore).getPostTypes({
+			per_page: 20,
+		});
+
+		if (!allPostTypes) {
+			return;
+		}
+
+		return allPostTypes.filter(function (postType) {
+			if (
+				!postType ||
+				!postType?.supports?.editor ||
+				postType?.slug.match(/^boldblocks_|^acf-|^wp_/) ||
+				!postType?.visibility?.show_ui ||
+				["post", "page", "navigation", "block"].includes(postType.slug)
+			) {
+				return false;
+			}
+
+			return true;
+		});
 	});
 
-	return null;
+	if (postTypes) {
+		return (
+			<AsyncModeProvider value={true}>
+				{postTypes.map((postType) => (
+					<ContentTypeSearch
+						postType={postType}
+						key={postType.slug}
+					/>
+				))}
+			</AsyncModeProvider>
+		);
+	} else {
+		return null;
+	}
 }
 
 registerPlugin("xcf-commands-content-search", {
-	render: ContentSearchCommandLoader,
+	render: ContentSearchRoot,
 });
-
