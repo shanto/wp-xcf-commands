@@ -1,4 +1,4 @@
-import { useMemo } from "@wordpress/element";
+import { useState, useMemo, useEffect } from "@wordpress/element";
 import { AsyncModeProvider, useSelect } from "@wordpress/data";
 import { store as coreDataStore } from "@wordpress/core-data";
 import { useCommandLoader } from "@wordpress/commands";
@@ -6,15 +6,27 @@ import { registerPlugin } from "@wordpress/plugins";
 import { addQueryArgs } from "@wordpress/url";
 import { page as pageIcon } from "@wordpress/icons";
 
+function useDebouncedValue(value, delay) {
+	const [debounced, setDebounced] = useState(value);
+
+	useEffect(() => {
+		const handle = setTimeout(() => setDebounced(value), delay);
+		return () => clearTimeout(handle);
+	}, [value, delay]);
+
+	return debounced;
+}
+
 function ContentTypeCommandLoader({ type: postType, search }) {
+	const debouncedSearch = useDebouncedValue(search, 750);
 	var args = ["postType", postType.slug];
 	var query = useMemo(
 		() => ({
-			search: search,
+			search: debouncedSearch || undefined,
 			per_page: 10,
 			orderby: "relevance",
 		}),
-		[search],
+		[debouncedSearch],
 	);
 
 	const { records, isLoading } = useSelect(
@@ -57,6 +69,28 @@ function ContentTypeCommandLoader({ type: postType, search }) {
 		});
 	}, [records, postType.slug, postType.labels?.singular_name, postType.name]);
 
+	useEffect(
+		function () {
+			if (!search || !commands) {
+				return;
+			}
+
+			setTimeout(() => {
+				document.querySelector("input[cmdk-input]")?.dispatchEvent(
+					new KeyboardEvent("keydown", {
+						key: "Home",
+						code: "Home",
+						keyCode: 36,
+						which: 36,
+						bubbles: true,
+					}),
+				);
+			}, 200);
+			
+		},
+		[search, commands],
+	);
+
 	return { commands, isLoading };
 }
 
@@ -66,6 +100,7 @@ function ContentTypeSearch({ postType }) {
 		hook: (search) => {
 			return ContentTypeCommandLoader({ ...search, type: postType });
 		},
+		context: 'site-editor'
 	});
 }
 
