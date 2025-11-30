@@ -1,0 +1,33 @@
+{
+  "name": "xcf-commands",
+  "version": "1.0.0",
+  "description": "WordPress Command Palette for Custom Post Types",
+  "main": "index.js",
+  "scripts": {
+    "playground": "cross-env-shell wp-playground-cli server --verbosity debug --experimental-devtools --experimental-multi-worker --blueprint blueprint/blueprint.json --mount-dir blueprint /wordpress/blueprint --auto-mount",
+    "build": "wp-scripts build",
+    "pack": "npm run build && zip -r xcf-commands.zip build/ src/ xcf-commands.* readme.txt demo.gif languages/",
+    "start": "wp-scripts start",
+    "packages-update": "wp-scripts packages-update",
+    "lint:js": "wp-scripts lint-js",
+    "lint:style": "wp-scripts lint-style"
+  },
+  "dependencies": {
+    "@wordpress/commands": "^1.0.0",
+    "@wordpress/components": "^25.0.0",
+    "@wordpress/data": "^9.0.0",
+    "@wordpress/element": "^5.0.0",
+    "@wordpress/i18n": "^4.0.0",
+    "@wordpress/url": "^3.0.0"
+  },
+  "devDependencies": {
+    "@wordpress/babel-preset-default": "^8.36.0",
+    "@wordpress/scripts": "^26.19.0",
+    "cross-env": "^10.1.0"
+  },
+  "browserslist": [
+    "extends @wordpress/browserslist-config"
+  ],
+  "author": "",
+  "license": "GPL-2.0-or-later"
+}

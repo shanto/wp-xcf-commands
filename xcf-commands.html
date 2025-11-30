@@ -1,0 +1,39 @@
+<div class="wrap">
+    <h1>XCF Commands</h1>
+
+    <div class="xcf-commands-onboarding">
+        <img src="<?= plugin_dir_url( __FILE__ ) . 'demo.gif' ?>" style="box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);" >
+    </div>
+
+    <form method="post" action="options.php">
+        <?php
+                settings_fields( 'xcf_commands_options_group' );
+                ?>
+
+        <h2>Ignored post types</h2>
+        <p>Select post types you want to exclude from the command palette search.</p>
+
+        <table class="form-table" role="presentation">
+            <tbody>
+                <?php foreach ( $post_types as $type ) : ?>
+                <tr>
+                    <th scope="row">
+                        <?php echo esc_html( $type->labels->name ); ?>
+                    </th>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="xcf_commands_options[ignored_post_types][]"
+                                value="<?php echo esc_attr( $type->name ); ?>" <?php checked( in_array( $type->name,
+                            $ignored, true ) ); ?>
+                            />
+                            Ignore
+                        </label>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+
+        <?php submit_button(); ?>
+    </form>
+</div>
