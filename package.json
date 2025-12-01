@@ -28,6 +28,6 @@
   "browserslist": [
     "extends @wordpress/browserslist-config"
   ],
-  "author": "",
+  "author": "Shanto",
   "license": "GPL-2.0-or-later"
 }

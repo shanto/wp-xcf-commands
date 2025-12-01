@@ -8,7 +8,7 @@
  * Author URI:      https://github.com/shanto/
  * Text Domain:     xcf-commands
  * Domain Path:     /languages
- * Version:         0.1.0
+ * Version:         0.1.1
  *
  * @package         XCF_Commands
  */
@@ -19,6 +19,9 @@ namespace XCF_Commands;
 
 class XCF_Commands
 {
+    static $support_link = "https://github.com/shanto/wp-xcf-commands/";
+    static $demo_link = "https://sforge.neetorecord.com/embeds/xcf-commands?autoplay=1";
+
     static function init() {
         add_action('enqueue_block_editor_assets', [__CLASS__, 'register_assets']);
         add_action('admin_enqueue_scripts', [__CLASS__, 'register_assets']);
@@ -45,8 +48,8 @@ class XCF_Commands
 
     static function admin_init() {
         register_setting(
-            'xcf_commands_options_group',     // settings group
-            'xcf_commands_options',           // option name in wp_options
+            'xcf_commands_options_group',
+            'xcf_commands_options',
             [
                 'type'              => 'array',
                 'sanitize_callback' => function ( $value ) {
@@ -67,18 +70,26 @@ class XCF_Commands
             'XCF Commands',
             'manage_options',
             'xcf-commands-settings',
-            [__CLASS__, 'xcf_commands_render_settings_page']
+            [__CLASS__, 'settings_page']
         );
+        add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), [__CLASS__, 'settings_link'] );
     }
 
-    static function xcf_commands_render_settings_page() {
+    static function settings_link( $links ) {
+        $settings_url = add_query_arg( 'page', 'xcf-commands-settings', get_admin_url() . 'admin.php' );
+        $settings_link = '<a href="' . esc_url( $settings_url ) . '">' . __( 'Settings' ) . '</a>';
+        array_unshift( $links, $settings_link );
+        return $links;
+    }
+
+    static function settings_page() {
         if ( ! current_user_can( 'manage_options' ) ) {
             return;
         }
         $options = get_option( 'xcf_commands_options', [] );
         $ignored = $options['ignored_post_types'] ?? [];
         $post_types = array_filter(get_post_types( [ 'show_ui' => true ], 'objects' ), function($post_type) use ($ignored) {
-            return !in_array($post_type->name, ['post', 'page', 'navigation', 'block', 'attachment']) && !preg_match('/^acf-|^wp_|^boldblocks_/', $post_type->name);
+            return !in_array($post_type->name, ['post', 'page', 'navigation', 'block', 'attachment']) && !preg_match('/^acf-|^wp_|^boldblocks_|^simple_/', $post_type->name);
         });
         return include(plugin_dir_path( __FILE__ ) . 'xcf-commands.html');
     }
