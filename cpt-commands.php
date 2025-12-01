@@ -1,26 +1,26 @@
 <?php
 /**
- * Plugin Name:     XCF Commands
- * Plugin URI:      https://github.com/shanto/wp-xcf-commands
- * Description:     Site editor commands for custom post types
+ * Plugin Name:     CPT Commands
+ * Plugin URI:      https://github.com/shanto/cpt-commands
+ * Description:     Custom Post Type commands for the command palette
  * License:         GPL v2 or later
  * Author:          Shaan
  * Author URI:      https://github.com/shanto/
- * Text Domain:     xcf-commands
+ * Text Domain:     cpt-commands
  * Domain Path:     /languages
- * Version:         0.1.1
+ * Version:         0.1.2
  *
- * @package         XCF_Commands
+ * @package         CPT_Commands
  */
 
-namespace XCF_Commands;
+namespace CPT_Commands;
 
 !defined('WPINC') && die;
 
-class XCF_Commands
+class CPT_Commands
 {
-    static $support_link = "https://github.com/shanto/wp-xcf-commands/";
-    static $demo_link = "https://sforge.neetorecord.com/embeds/xcf-commands?autoplay=1";
+    static $support_link = "https://github.com/shanto/cpt-commands/";
+    static $demo_link = "";
 
     static function init() {
         add_action('enqueue_block_editor_assets', [__CLASS__, 'register_assets']);
@@ -38,7 +38,7 @@ class XCF_Commands
         $asset_file = include plugin_dir_path( __FILE__ ) . 'build/index.asset.php';
 
         wp_enqueue_script(
-            'xcf-commands',
+            'cpt-commands',
             plugin_dir_url( __FILE__ ) . 'build/index.js',
             $asset_file['dependencies'],
             $asset_file['version'],
@@ -48,8 +48,8 @@ class XCF_Commands
 
     static function admin_init() {
         register_setting(
-            'xcf_commands_options_group',
-            'xcf_commands_options',
+            'cpt_commands_options_group',
+            'cpt_commands_options',
             [
                 'type'              => 'array',
                 'sanitize_callback' => function ( $value ) {
@@ -66,17 +66,17 @@ class XCF_Commands
 
     static function admin_menu() {
         add_options_page(
-            'XCF Commands',
-            'XCF Commands',
+            'CPT Commands',
+            'CPT Commands',
             'manage_options',
-            'xcf-commands-settings',
+            'cpt-commands-settings',
             [__CLASS__, 'settings_page']
         );
         add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), [__CLASS__, 'settings_link'] );
     }
 
     static function settings_link( $links ) {
-        $settings_url = add_query_arg( 'page', 'xcf-commands-settings', get_admin_url() . 'admin.php' );
+        $settings_url = add_query_arg( 'page', 'cpt-commands-settings', get_admin_url() . 'admin.php' );
         $settings_link = '<a href="' . esc_url( $settings_url ) . '">' . __( 'Settings' ) . '</a>';
         array_unshift( $links, $settings_link );
         return $links;
@@ -86,13 +86,13 @@ class XCF_Commands
         if ( ! current_user_can( 'manage_options' ) ) {
             return;
         }
-        $options = get_option( 'xcf_commands_options', [] );
+        $options = get_option( 'cpt_commands_options', [] );
         $ignored = $options['ignored_post_types'] ?? [];
         $post_types = array_filter(get_post_types( [ 'show_ui' => true ], 'objects' ), function($post_type) use ($ignored) {
             return !in_array($post_type->name, ['post', 'page', 'navigation', 'block', 'attachment']) && !preg_match('/^acf-|^wp_|^boldblocks_|^simple_/', $post_type->name);
         });
-        return include(plugin_dir_path( __FILE__ ) . 'xcf-commands.html');
+        return include(plugin_dir_path( __FILE__ ) . 'cpt-commands.html');
     }
 }
 
-add_action('plugins_loaded', [XCF_Commands::class, 'init']);
+add_action('plugins_loaded', [CPT_Commands::class, 'init']);

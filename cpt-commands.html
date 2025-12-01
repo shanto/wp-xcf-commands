@@ -1,16 +1,17 @@
 <div class="wrap">
-    <h1>XCF Commands</h1>
-    <p>Adds a set of new search results to the site editor command palette (CMD+K/Ctrl+K) for all custom types except those
-    ignored from the settings page.</p>
-    <div class="xcf-commands-onboarding">
-        <a href="<?=\XCF_Commands\XCF_Commands::$demo_link?>">
-            <img src="<?= plugin_dir_url( __FILE__ ) . 'demo.gif' ?>" style="box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);" >
-        </a>
+    <h1>CPT Commands</h1>
+    <p>Adds a set of new search results to the site editor command palette (CMD+K/Ctrl+K) for all custom types except
+        those
+        ignored from the settings page.</p>
+    <div class="cpt-commands-onboarding">
+        <!-- <a href="<?=\CPT_Commands\CPT_Commands::$demo_link?>"> -->
+        <img src="<?= plugin_dir_url( __FILE__ ) . 'demo.gif' ?>" style="box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);">
+        <!-- </a> -->
     </div>
 
     <form method="post" action="options.php">
         <?php
-                settings_fields( 'xcf_commands_options_group' );
+                settings_fields( 'cpt_commands_options_group' );
                 ?>
 
         <h2>Ignored post types</h2>
@@ -25,7 +26,7 @@
                     </th>
                     <td>
                         <label>
-                            <input type="checkbox" name="xcf_commands_options[ignored_post_types][]"
+                            <input type="checkbox" name="cpt_commands_options[ignored_post_types][]"
                                 value="<?php echo esc_attr( $type->name ); ?>" <?php checked( in_array( $type->name,
                             $ignored, true ) ); ?>
                             />
@@ -38,10 +39,10 @@
         </table>
 
         <?php if(empty($post_types)) : ?>
-            <p>No content types.</p>
+        <p>No content types.</p>
         <?php endif ?>
 
         <?php submit_button(); ?>
-        <a class="button button" target="_blank" href="<?=\XCF_Commands\XCF_Commands::$support_link?>">Support</a>
+        <a class="button button" target="_blank" href="<?=\CPT_Commands\CPT_Commands::$support_link?>">Support</a>
     </form>
 </div>

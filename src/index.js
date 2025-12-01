@@ -50,7 +50,7 @@ function ContentTypeCommandLoader({ type: postType, search }) {
 		}
 		return records.map((record) => {
 			return {
-				name: `xcf-commands/edit-${postType.slug}-${record.id}`,
+				name: `cpt-commands/edit-${postType.slug}-${record.id}`,
 				icon: pageIcon,
 				label: (record.title && record.title.rendered) || "(No title)",
 				description: postType.labels?.singular_name || postType.name,
@@ -86,7 +86,7 @@ function ContentTypeCommandLoader({ type: postType, search }) {
 					}),
 				);
 			}, 200);
-			
+
 		},
 		[search, commands],
 	);
@@ -96,7 +96,7 @@ function ContentTypeCommandLoader({ type: postType, search }) {
 
 function ContentTypeSearch({ postType }) {
 	useCommandLoader({
-		name: `xcf-commands/${postType.slug}-search`,
+		name: `cpt-commands/${postType.slug}-search`,
 		hook: (search) => {
 			return ContentTypeCommandLoader({ ...search, type: postType });
 		},
@@ -147,6 +147,6 @@ function ContentSearchRoot() {
 	}
 }
 
-registerPlugin("xcf-commands-content-search", {
+registerPlugin("cpt-commands-root", {
 	render: ContentSearchRoot,
 });

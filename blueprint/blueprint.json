@@ -12,7 +12,6 @@
     },
     {
       "step": "installPlugin",
-      "progress": { "caption": "Installing Simple CPT" },
       "pluginData": {
         "resource": "wordpress.org/plugins",
         "slug": "simple-cpt"
@@ -20,18 +19,10 @@
     },
     {
       "step": "installPlugin",
-      "progress": { "caption": "Installing SQL Buddy" },
       "pluginData": {
         "resource": "wordpress.org/plugins",
         "slug": "sql-buddy"
-      },
-      "options": {
-        "activate": true
       }
-    },
-    {
-      "step": "mkdir",
-      "path": "/wordpress/wp-content/mu-plugins"
     },
     {
       "step": "writeFile",
