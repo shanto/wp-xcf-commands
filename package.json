@@ -1,12 +1,21 @@
 {
   "name": "cpt-commands",
-  "version": "1.0.0",
+  "version": "0.1.2",
   "description": "WordPress Command Palette for Custom Post Types",
   "main": "index.js",
+  "files": [
+    "build/",
+    "src/",
+    "cpt-commands.{html,php}",
+    "readme.txt",
+    "assets/",
+    "languages/"
+  ],
   "scripts": {
     "playground": "wp-playground-cli server --verbosity debug --experimental-devtools --experimental-multi-worker --blueprint blueprint/blueprint.json --mount-dir blueprint /wordpress/blueprint --auto-mount",
     "build": "wp-scripts build",
-    "pack": "npm run build && zip -r cpt-commands.zip build/ src/ cpt-commands.* readme.txt demo.gif languages/",
+    "pre-build": "node pre-build.js",
+    "zip": "npm run pre-build && npm run build && wp-scripts plugin-zip",
     "dev": "wp-scripts start",
     "packages-update": "wp-scripts packages-update",
     "lint:js": "wp-scripts lint-js",

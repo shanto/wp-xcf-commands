@@ -1,6 +1,6 @@
 === CPT Commands ===
 Contributors: yafarhad
-Tags: cpt, scf, acf, commands, gutenberg, site-editor
+Tags: cpt, scf, acf, commands, site-editor
 Requires at least: 6.8
 Tested up to: 6.9
 Stable tag: 0.1.2
@@ -9,34 +9,34 @@ License: GPLv2 or later
 
 Adds a set of new search results to the site editor command palette (CMD+K/Ctrl+K) for all custom types except those ignored from the settings page.
 
-== Why ==
+== Description ==
 
-WordPress has a nice time-saving feature— the command palette. It is very useful to perform quick commands and also navigate between pages or posts using keyboard alone. However, this built-in feature is limited to native Posts and Pages types. It does not return content from other content types. So, those using the site editor with Custom Types setup, this is workflow is then partially broken.
+WordPress has a great time-saving feature— the command palette. It is very useful to perform quick commands and also navigate between pages or posts using keyboard alone. However, this built-in feature is limited to the default Posts and Pages types. It does not return entries from other content types. So, those using the site editor with Custom Types setup, this is workflow partially breaks.
 
-**CPT Commands** is a free WordPress plugin that adds a set of new search results to the site editor command palette (CMD+K/Ctrl+K) for all items filed under custom types except for those ignored from the settings page.
+CPT Commands fills the gap. Side-by-side with WordPress default types, it injects **custom type** entries into the menu. Requires no setup. Just install, activate and you are good to go!
 
 == Installation ==
+0. Visit the **Add New** plugin screen and click the **Upload Plugin** button.
+0. Click the **Browse…** button and select zip file from your computer.
+0. Click the **Install Now** button.
+0. **Activate** the plugin.
 
-### Manual
+== Configuration ==
 
-* Upload the CPT Commands folder to the plugins directory in your WordPress installation
-* Activate the plugin.
-* Custom post types will start appearing in the command palette immediately.
-* See **Settings** → **CPT Commands** for customization options.
+See **Settings** → **CPT Commands** for customization options. This step is optional and not necessary in most cases.
 
-### Admin Installer via Zip
+==  Screenshots ==
+1. Plugin in action (GIF record)
 
-* Visit the Add New plugin screen and click the "Upload Plugin" button.
-* Click the "Browse…" button and select zip file from your computer.
-* Click the "Install Now" button.
-* Activate the plugin.
-* Custom post types will start appearing in the command palette immediately.
-* See **Settings** → **CPT Commands** for customization options.
+== Frequently Asked Questions ==
+
+= Is **CPT Commands** free? =
+Absolutely free and it will remain free forever.
 
 == Changelog ==
 
 = 0.1.2 =
-* Rebranding to CPT Commands
+* Rebranding
 
 = 0.1.1 =
 * Update readme
