@@ -1,3 +1,6 @@
 {
-    "wordpress-readme.preview.theme": "wordpress-org"
+    "wordpress-readme.preview.theme": "wordpress-org",
+    "phpResolver.phpBeautifierCommand": "C:\\Users\\Shaan\\Projects\\WordPress\\cpt-commands\\vendor\\bin\\phpcbf",
+    "phpResolver.phpSnifferCommand": "C:\\Users\\Shaan\\Projects\\WordPress\\cpt-commands\\vendor\\bin\\phpcs",
+    "phpResolver.phpStandards": "WordPress"
 }

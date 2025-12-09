@@ -1,0 +1,1 @@
+wp-playground-cli server --verbosity debug --login --experimental-devtools --blueprint blueprint/blueprint.json --mount "blueprint/:/wordpress/blueprint/" --auto-mount --php 7.2

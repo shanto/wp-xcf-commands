@@ -122,7 +122,7 @@ function ContentSearchRoot() {
 				!postType?.visibility?.show_ui ||
 				postType?.slug.match(/^boldblocks_|^acf-|^wp_/) ||
 				["post", "page", "navigation", "block"].includes(postType.slug) ||
-				window.CPT_COMMANDS_OPTIONS?.ignored_post_types.includes(postType.slug)
+				CPT_COMMANDS_OPTIONS?.ignored_post_types.includes(postType.slug)
 			) {
 				return false;
 			}

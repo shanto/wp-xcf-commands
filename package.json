@@ -1,12 +1,12 @@
 {
   "name": "cpt-commands",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "WordPress Command Palette for Custom Post Types",
   "main": "index.js",
   "files": [
     "build/",
     "src/",
-    "cpt-commands.{html,php}",
+    "*cpt-commands.{html,php}",
     "readme.txt",
     "assets/",
     "languages/"

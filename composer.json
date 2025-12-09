@@ -1,8 +1,14 @@
 {
   "require-dev": {
-    "php-stubs/wordpress-stubs": "^6.8"
+    "php-stubs/wordpress-stubs": "^6.8",
+    "wp-coding-standards/wpcs": "^3.0"
   },
   "scripts": {
     "makepot": "wp i18n make-pot ."
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
   }
 }

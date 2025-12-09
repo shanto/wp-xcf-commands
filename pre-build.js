@@ -13,6 +13,7 @@ const newReadmeContent = readmeContent.replace(
     /Stable tag: \d+\.\d+\.\d+/,
     `Stable tag: ${packageJson.version}`
 );
+fs.writeFileSync(readmeFile, newReadmeContent);
 
 const pluginFile = path.join(__dirname, 'cpt-commands.php');
 const pluginContent = fs.readFileSync(pluginFile, 'utf8');

@@ -1,0 +1,1 @@
+.\vendor\bin\phpcs --config-set installed_paths "$PWD\vendor\wp-coding-standards\wpcs,$PWD\vendor\phpcsstandards\phpcsextra,$PWD\vendor\phpcsstandards\phpcsutils"

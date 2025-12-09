@@ -1,22 +1,14 @@
 <div class="wrap">
     <h1>CPT Commands</h1>
-    <p>Adds a set of new search results to the site editor command palette (CMD+K/Ctrl+K) for all custom types except
-        those
-        ignored from the settings page.</p>
+    <p><?php _e('Adds a set of new search results to the command palette (CMD+K/Ctrl+K) for all custom types except those ignored from the settings page.', 'cpt-commands') ?></p>
     <div class="cpt-commands-onboarding">
-        <!-- <a href="<?=\CPT_Commands\CPT_Commands::$demo_link?>"> -->
-        <img src="<?= plugin_dir_url( __FILE__ ) . 'assets/screenshot-1.gif' ?>"
+        <img src="<?php echo plugin_dir_url( __FILE__ ) . 'assets/screenshot-1.gif' ?>"
             style="box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);">
-        <!-- </a> -->
     </div>
-
     <form method="post" action="options.php">
-        <?php
-                settings_fields( 'cpt_commands_options_group' );
-                ?>
-
-        <h2>Ignored post types</h2>
-        <p>Select post types you want to exclude from the command palette search.</p>
+        <?php settings_fields( 'cpt_commands_options_group' ); ?>
+        <h2><?php _e('Ingore Post Types', 'cpt-commands') ?></h2>
+        <p><?php _e('Select post types to ignore', 'cpt-commands') ?></p>
 
         <table class="form-table" role="presentation">
             <tbody>
@@ -38,12 +30,10 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
-
         <?php if(empty($post_types)) : ?>
-        <p>No content types.</p>
+        <p><?php _e('No post types found', 'cpt-commands') ?></p>
         <?php endif ?>
-
         <?php submit_button(); ?>
-        <a class="button button" target="_blank" href="<?=\CPT_Commands\CPT_Commands::$support_link?>">Support</a>
+        <a class="button button" target="_blank" href="<?php echo \CPT_Commands\CPT_Commands::$support_link ?>"><?php _e('Support', 'cpt-commands') ?></a>
     </form>
 </div>

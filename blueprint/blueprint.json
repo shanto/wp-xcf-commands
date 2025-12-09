@@ -14,14 +14,14 @@
       "step": "installPlugin",
       "pluginData": {
         "resource": "wordpress.org/plugins",
-        "slug": "simple-cpt"
+        "slug": "plugin-check"
       }
     },
     {
       "step": "installPlugin",
       "pluginData": {
         "resource": "wordpress.org/plugins",
-        "slug": "sql-buddy"
+        "slug": "simple-cpt"
       }
     },
     {

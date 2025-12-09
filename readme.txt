@@ -3,8 +3,8 @@ Contributors: yafarhad
 Tags: cpt, scf, acf, commands, site-editor
 Requires at least: 6.8
 Tested up to: 6.9
-Stable tag: 0.1.3
-Requires PHP: 8.1
+Stable tag: 0.1.4
+Requires PHP: 7.2
 License: GPLv2 or later
 
 Adds a set of new search results to the site editor command palette (CMD+K/Ctrl+K) for all custom types except those ignored from the settings page.
@@ -34,6 +34,9 @@ See **Settings** → **CPT Commands** for customization options. This step is op
 Absolutely free and it will remain free forever.
 
 == Changelog ==
+
+= 0.1.4 =
+* Fixes for Plugin Review (251209)
 
 = 0.1.3 =
 * CMD+K Everywhere (6.9)
